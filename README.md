@@ -16,8 +16,8 @@ Stack: **React 19**, **TypeScript**, **Vite**, **MUI**, **Redux Toolkit**, **RTK
 ### Install
 
 ```bash
-git clone <repository-url>
-cd listing_and_view
+git clone https://github.com/Ashish95sharma/List-View.git
+cd List-View
 npm install
 ```
 
