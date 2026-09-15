@@ -21,7 +21,7 @@ cd List-View
 npm install
 ```
 
-No API keys are required. DummyJSON is public (`https://dummyjson.com`). Copy `.env.example` to `.env` if you want a local env file; the base URL is currently set in the RTK Query API slice.
+No API keys are required. DummyJSON is public. Copy `.env.example` to `.env` — `VITE_APP_BASE_URL` defaults to `https://dummyjson.com`.
 
 ### Run locally
 
@@ -120,5 +120,4 @@ MUI is the component library (theme, layout primitives, form controls). Feature 
 - **Related products** on the detail page (same category).
 - **Tests** for `createParamsPayload`, client filter helpers, and listing/detail flows.
 - **ESLint flat config** so `npm run eslint` works, plus CI for lint + `npm run build`.
-- **Move the DummyJSON base URL** into `VITE_API_BASE_URL` instead of hardcoding it in `productApi`.
 - **Remove or hide the server-filters debug toggle** in a production build.

@@ -6,11 +6,12 @@ import type {
   ProductsByCategoryParams,
   ProductsQueryParams
 } from '@/types/product.types';
+import { API_BASE_URL } from '@/constants/globalConstants';
 import { createParamsPayload } from '@utils/createParamsPayload';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com' }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL || 'https://dummyjson.com' }),
   tagTypes: ['Products', 'Categories'],
   endpoints: (builder) => ({
     getProducts: builder.query<ProductResponse, ProductsQueryParams | void>({
