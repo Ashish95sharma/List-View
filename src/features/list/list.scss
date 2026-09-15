@@ -1,0 +1,83 @@
+.list {
+  min-height: 100vh;
+  background-color: #fafafa;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 64px);
+
+    @media (min-width: 900px) {
+      flex-direction: row;
+    }
+  }
+
+  &__sidebar {
+    flex-shrink: 0;
+
+    @media (min-width: 900px) {
+      position: sticky;
+      top: 64px;
+      align-self: flex-start;
+      width: 280px;
+      height: calc(100vh - 64px);
+    }
+  }
+
+  &__drawer-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+  }
+
+  &__main {
+    flex-grow: 1;
+    padding: 16px;
+    background-color: #fff;
+
+    @media (min-width: 900px) {
+      padding: 24px;
+    }
+  }
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+
+  &__pagination {
+    margin-top: 32px;
+  }
+
+  &__server-toggle {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__server-toggle-btn {
+    text-transform: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+
+    &.MuiButton-outlined {
+      background-color: #fff !important;
+    }
+  }
+
+  &__server-toggle-info {
+    background-color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+}
