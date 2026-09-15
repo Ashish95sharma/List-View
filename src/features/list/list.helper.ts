@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { ALL_CATEGORIES_VALUE, type ProductFiltersValue } from '@components/ProductFilters';
-import { DEFAULT_LIMIT } from '@constants/ui.constants';
+import { CATALOG_LIMIT, DEFAULT_LIMIT } from '@constants/ui.constants';
 import {
   useGetCategoriesQuery,
   useGetProductsByCategoryQuery,
@@ -40,16 +40,18 @@ export const useListHelper = () => {
   const selectedCategory =
     filters.category === ALL_CATEGORIES_VALUE ? null : filters.category;
   const skip = (page - 1) * DEFAULT_LIMIT;
-  const listParams = createParamsPayload<ProductsQueryParams>({
-    limit: DEFAULT_LIMIT,
-    skip,
-    ...(useServerFilters && {
-      brand: filters.brands.join(','),
-      minPrice: parseOptionalPrice(filters.minPrice),
-      maxPrice: parseOptionalPrice(filters.maxPrice),
-      q: headerSearch.trim()
-    })
-  });
+  const listParams = createParamsPayload<ProductsQueryParams>(
+    useServerFilters
+      ? {
+          limit: DEFAULT_LIMIT,
+          skip,
+          brand: filters.brands.join(','),
+          minPrice: parseOptionalPrice(filters.minPrice),
+          maxPrice: parseOptionalPrice(filters.maxPrice),
+          q: headerSearch.trim()
+        }
+      : { limit: CATALOG_LIMIT }
+  );
 
   const categoriesQuery = useGetCategoriesQuery();
   const allQuery = useGetProductsQuery(listParams, {
@@ -66,11 +68,12 @@ export const useListHelper = () => {
   const brands = useMemo(() => extractUniqueBrands(products), [products]);
 
   useEffect(() => {
+    if (!brands.length) return;
     const next = filters.brands.filter((brand) => brands.includes(brand));
     if (next.length !== filters.brands.length) dispatch(setListingBrands(next));
   }, [brands, dispatch, filters.brands]);
 
-  const visibleProducts = useMemo(() => {
+  const filteredProducts = useMemo(() => {
     if (useServerFilters) return products;
     return applyClientProductFilters(products, {
       brands: filters.brands,
@@ -80,7 +83,17 @@ export const useListHelper = () => {
     });
   }, [useServerFilters, products, filters, headerSearch]);
 
-  const totalPages = Math.max(1, Math.ceil((productsQuery.data?.total ?? 0) / DEFAULT_LIMIT));
+  const visibleProducts = useServerFilters
+    ? filteredProducts
+    : filteredProducts.slice(skip, skip + DEFAULT_LIMIT);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(
+      (useServerFilters ? (productsQuery.data?.total ?? 0) : filteredProducts.length) /
+        DEFAULT_LIMIT
+    )
+  );
 
   useEffect(() => {
     if (page > totalPages) dispatch(setListingPage(totalPages));

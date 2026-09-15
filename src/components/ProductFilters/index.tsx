@@ -12,6 +12,7 @@ import {
   Typography
 } from '@mui/material';
 import type { Category } from '@/types/product.types';
+import { FILTER_VISIBLE_COUNT } from '@constants/ui.constants';
 
 export const ALL_CATEGORIES_VALUE = 'all';
 
@@ -63,7 +64,7 @@ const ProductFilters = ({ value, categories, brands, onChange }: ProductFiltersP
           control={<Radio size="small" />}
           label={<Typography variant="body2">All Categories</Typography>}
         />
-        {categories.slice(0, 6).map((category) => (
+        {categories.slice(0, FILTER_VISIBLE_COUNT).map((category) => (
           <FormControlLabel
             key={category.slug}
             value={category.slug}
@@ -113,7 +114,7 @@ const ProductFilters = ({ value, categories, brands, onChange }: ProductFiltersP
             No brands in the current results
           </Typography>
         ) : (
-          brands.map((brand) => (
+          brands.slice(0, FILTER_VISIBLE_COUNT).map((brand) => (
             <FormControlLabel
               key={brand}
               control={
